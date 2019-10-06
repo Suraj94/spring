@@ -2,6 +2,9 @@ package com.luv2code.sprinannotationpractice;
 
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,17 +18,26 @@ public class MyFortuneServiceImpl implements IFortuneService {
 	@Value("${spring.fortunes}")
 	private String fortunes;
 
+	private String[] listOfFortunes;
+
 	@Override
 	public String getDailyfortune() {
 		Random randomNo = new Random();
 		// get the values of the fortune from properties file.
-		int number = randomNo.nextInt(getArrayOffortune().length);
+		int number = randomNo.nextInt(listOfFortunes.length);
 		// get the randomm value of fortune.
-		return getArrayOffortune()[number];
+		return listOfFortunes[number];
 	}
 
-	private String[] getArrayOffortune() {
-		return fortunes.split(",");
+	@PostConstruct
+	private void getArrayOffortune() {
+		System.out.println(">>Inside of post constructor init method!");
+		listOfFortunes = fortunes.split(",");
+	}
+
+	@PreDestroy
+	private void cleanUpMethod() {
+		System.out.println(">> Inside of pre destroy method!");
 	}
 
 	public String getFortunes() {
