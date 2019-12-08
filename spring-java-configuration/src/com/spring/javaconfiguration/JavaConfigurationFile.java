@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 
 @Configuration
 @PropertySource("classpath:spring-context.properties")
+@ComponentScan("com.spring.javaconfiguration123")
 public class JavaConfigurationFile
 {
 	@Bean

@@ -1,0 +1,144 @@
+<project name="datastoreApiGateway" default="deployable">
+	<property name="build" value="..\..\..\builds" />
+	<property name="thirdparty" value="..\..\..\dependency\thirdparty\lib" />
+	<property name="projectName" value="datastore-api-gateway" />
+	<property name="version" value="19.10.1.0-dev001" />
+	<property name="distribution" value="${build}/${projectName}" />
+	<property name="war.name" value="${distribution}/${projectName}.war" />
+
+	<tstamp>
+		<format property="timestamp" pattern="yyyy-dd-MM HH:mm:ss" />
+	</tstamp>
+
+	<target name="deployable" depends="package" description="package the .java files into war.">
+		<war basedir="WebContent" destfile="${war.name}">
+			<manifest>
+				<attribute name="Built-By" value="Cloud Engineering Team" />
+				<attribute name="Build-Timestamp" value="${timestamp}" />
+				<attribute name="Specification-Version" value="19.0" />
+				<attribute name="Specification-Vendor" value="Capsilon" />
+				<attribute name="Specification-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor" value="Capsilon" />
+			</manifest>
+			<lib dir="${distribution}/lib">
+				<include name="${projectName}.jar" />
+			</lib>
+			<lib refid="thirdparty" />
+			<lib refid="spring" />
+			<lib refid="build_oss-api" />
+			<lib refid="build_cap-commons-sf" />
+			<lib refid="build_cache-proxy" />
+			<lib refid="build_kor-business-datastore" />
+			<lib refid="build_kor" />
+		</war>
+	</target>
+
+	<target name="package" depends="compile">
+		<mkdir dir="${distribution}/lib" />
+		<jar basedir="classes" jarfile="${distribution}/lib/${projectName}.jar" index="true">
+			<manifest>
+				<attribute name="Built-By" value="Cloud Engineering Team" />
+				<attribute name="Build-Timestamp" value="${timestamp}" />
+				<attribute name="Specification-Version" value="19.0" />
+				<attribute name="Specification-Vendor" value="Capsilon" />
+				<attribute name="Specification-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor" value="Capsilon" />
+			</manifest>
+		</jar>
+		<jar basedir="classes" filesonly="true" index="true" jarfile="${distribution}/lib/${projectName}-api.jar">
+			<include name="com/capsilon/katalyst/api/*" />
+			<include name="com/capsilon/katalyst/exception/*" />
+			<manifest>
+				<attribute name="Built-By" value="Cloud Engineering Team" />
+				<attribute name="Build-Timestamp" value="${timestamp}" />
+				<attribute name="Specification-Version" value="19.0" />
+				<attribute name="Specification-Vendor" value="Capsilon" />
+				<attribute name="Specification-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Vendor" value="Capsilon" />
+				<attribute name="Implementation-Title" value="Datastore Api Gateway" />
+				<attribute name="Implementation-Version" value="${version}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="classes" />
+		<javac includeantruntime="false" destdir="classes" srcdir="src" debug="true">
+			<classpath>
+				<fileset refid="thirdparty" />
+				<fileset refid="spring" />
+				<fileset refid="build_oss-api" />
+				<fileset refid="build_cap-commons-sf" />
+				<fileset refid="build_cache-proxy" />
+				<fileset refid="build_kor-business-datastore" />
+				<fileset refid="build_kor" />
+			</classpath>
+		</javac>
+		<copy todir="classes">
+			<fileset dir="src">
+				<include name="**/*.xml" />
+				<include name="**/*.xsd" />
+				<include name="resources/**" />
+				<include name="conf/**"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="classes" />
+		<delete dir="${distribution}" />
+	</target>
+
+	<!-- Filesets are managed below this -->
+	<fileset id="thirdparty" dir="${thirdparty}">
+		<include name="commons-pool-1.4.jar" />
+		<include name="commons-logging.jar" />
+		<include name="commons-collections-3.1.jar" />
+		<include name="commons-dbcp.jar" />
+		<include name="commons-beanutils.jar" />
+		<include name="commons-httpclient-3.1.jar" />
+		<include name="commons-codec-1.7.jar" />
+		<include name="commons-io-2.4.jar" />
+		<include name="dom4j-1.6.1.jar" />
+		<include name="hessian-4.0.7.jar" />
+		<include name="slf4j-api-1.5.0.jar" />
+		<include name="slf4j-log4j12-1.5.0.jar" />
+		<include name="log4j-1.2.13.jar" />
+	</fileset>
+	<fileset id="spring" dir="${thirdparty}/spring-4.1.7">
+		<include name="aopalliance-1.0.jar" />
+		<include name="spring-beans-4.1.7.RELEASE.jar" />
+		<include name="spring-context-4.1.7.RELEASE.jar" />
+		<include name="spring-core-4.1.7.RELEASE.jar" />
+		<include name="spring-web-4.1.7.RELEASE.jar" />
+		<include name="spring-aop-4.1.7.RELEASE.jar" />
+		<include name="spring-expression-4.1.7.RELEASE.jar" />
+		<include name="spring-webmvc-4.1.7.RELEASE.jar" />
+	</fileset>
+	<fileset id="build_oss-api" dir="${build}/oss/lib">
+		<include name="oss-api.jar" />
+	</fileset>
+	<fileset id="build_cap-commons-sf" dir="${build}/cap-commons-sf/lib">
+		<include name="cap-commons-annotations.jar" />
+		<include name="cap-commons-fs.jar" />
+		<include name="cap-commons-jms.jar" />
+		<include name="cap-commons-logging.jar" />
+		<include name="cap-commons-utils.jar" />
+		<include name="cap-service-framework.jar" />
+		<include name="cap-hessian-client.jar" />
+		<include name="cap-commons-http-client.jar" />
+	</fileset>
+	<fileset id="build_cache-proxy" dir="${build}/cache-proxy/lib">
+		<include name="cache-proxy.jar" />
+	</fileset>
+	<fileset id="build_kor" dir="${build}/lk-kor/lib">
+		<include name="lk-kor.jar" />
+	</fileset>
+	<fileset id="build_kor-business-datastore" dir="${build}/kor-business-datastore/lib">
+		<include name="kor-business-datastore.jar" />
+	</fileset>
+</project>
