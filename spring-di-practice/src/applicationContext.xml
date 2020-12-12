@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd"
+    xmlns:p="http://www.springframework.org/schema/p"
+    >
+
+
+	<!-- Define your beans here -->
+
+	<!-- define the dependency -->
+
+	<!-- <bean id="myCoach" class="com.luv2code.springdemo.CricketCoach"> </bean> -->
+
+
+	<!-- <bean id="mySport" class="com.luv2code.dependecyingestion.HockyPractice"> 
+		<constructor-arg> <bean class="com.luv2code.dependecyingestion.HappyFortuneServices"> 
+		</bean> </constructor-arg> </bean> -->
+	<!-- <bean id="HappyFortune" class="com.luv2code.dependecyingestion.TTFortuneServiceImpl"></bean> 
+		<bean id="TTSport" class="com.luv2code.dependecyingestion.TableTenisPractice" 
+		> set up setter injection <property name="fortuneService" ref="HappyFortune" 
+		></property> </bean> -->
+		
+	<!-- <context:property-placeholder location="classpath:spring-context.properties" /> -->
+	
+	<bean id="student" class="com.spring.di.EngineeringStudent">
+		<property name="name" value="suraj"></property>
+		<property name="className" value="B"></property>
+		<property name="marksheet">
+			<bean class="com.spring.di.Marksheet" 
+			p:mathsMaks="80"
+			p:englishMarks="100"
+			p:total="90"
+			p:percentage="80">				
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="student2" class="com.spring.di.EngineeringStudent"
+	 p:name="suraj"
+	 p:className="A"
+	>
+	</bean>
+	
+	<bean id="secondaryStd" class="com.spring.di.SecondaryStudent">
+		
+	
+	</bean>
+	
+	
+	
+</beans>
+
+
+
+
+
