@@ -29,12 +29,14 @@ public class MyFortuneServiceImpl implements IFortuneService {
 		return listOfFortunes[number];
 	}
 
+	//init method
 	@PostConstruct
 	private void getArrayOffortune() {
 		System.out.println(">>Inside of post constructor init method!");
 		listOfFortunes = fortunes.split(",");
 	}
 
+	//destroy method
 	@PreDestroy
 	private void cleanUpMethod() {
 		System.out.println(">> Inside of pre destroy method!");
